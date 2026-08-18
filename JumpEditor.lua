@@ -10,8 +10,8 @@ local playerGui = player:WaitForChild("PlayerGui")
 -- ID ẢNH
 --------------------------------------------------
 
-local OUTSIDE_IMAGE_ID = "rbxassetid://103326817624079"
-local MENU_IMAGE_ID = "rbxassetid://83617168855641"
+local OUTSIDE_IMAGE_ID = "rbxassetid://108349790024749"
+local MENU_IMAGE_ID = "rbxassetid://123931593435275"
 
 --------------------------------------------------
 -- GUI
