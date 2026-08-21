@@ -190,7 +190,8 @@ local OriginalPosition=nil
 local OriginalSize=nil
 local SavedPosition=nil
 local SavedSize=nil
-
+local CrouchPosition=nil
+local CrouchSize=nil
 local function GetJump()
 	local TouchGui=PlayerGui:FindFirstChild("TouchGui")
 	if not TouchGui then
@@ -897,6 +898,12 @@ Player.CharacterAdded:Connect(function()
 	task.wait(0.5)
 
 	local J=GetJump()
+	local C=FindCrouch()
+
+	if C and not CrouchPosition then
+		CrouchPosition=C.Position
+		CrouchSize=C.Size
+	end
 
 	if J and SavedPosition then
 		J.Position=SavedPosition
@@ -905,6 +912,21 @@ Player.CharacterAdded:Connect(function()
 	if J and SavedSize then
 		J.Size=SavedSize
 	end
-end)
 
+	if C and CrouchPosition then
+		C.Position=CrouchPosition
+	end
+
+	if C and CrouchSize then
+		C.Size=CrouchSize
+	end
+end)
+local function FindCrouch()
+	local TouchGui=PlayerGui:FindFirstChild("TouchGui")
+	if not TouchGui then
+		return nil
+	end
+
+	return TouchGui:FindFirstChild("CrouchButton",true)
+end
 RefreshPlayers()
