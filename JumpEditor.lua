@@ -203,7 +203,7 @@ local function ChangeJumpImage()
 	pcall(function()
 		if j:IsA("ImageButton") or j:IsA("ImageLabel") then
 			j.Image=OUTSIDE_IMAGE
-			j.ImageTransparency=0
+			j.ImageTransparency=0.8
 			j.ScaleType=Enum.ScaleType.Fit
 		end
 	end)
@@ -294,12 +294,13 @@ UIS.InputBegan:Connect(function(input)
 		return
 	end
 
-	local TouchGui=GetTouchGui()
-	if not TouchGui then return end
-
 	local pos=input.Position
 
-	for _,obj in ipairs(TouchGui:GetDescendants()) do
+	for _,obj in ipairs(PlayerGui:GetDescendants()) do
+		if obj:IsDescendantOf(Gui) then
+			continue
+		end
+
 		if IsGuiButton(obj) and obj.Visible then
 			local p=obj.AbsolutePosition
 			local s=obj.AbsoluteSize
