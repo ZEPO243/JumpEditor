@@ -10,9 +10,7 @@ local OUTSIDE_IMAGE="rbxthumb://type=Asset&id=103326817624079&w=420&h=420"
 local MENU_IMAGE="rbxthumb://type=Asset&id=83617168855641&w=420&h=420"
 
 local Old=PlayerGui:FindFirstChild("MyMenu")
-if Old then
-	Old:Destroy()
-end
+if Old then Old:Destroy() end
 
 local Gui=Instance.new("ScreenGui")
 Gui.Name="MyMenu"
@@ -22,44 +20,42 @@ Gui.ZIndexBehavior=Enum.ZIndexBehavior.Sibling
 Gui.DisplayOrder=100
 Gui.Parent=PlayerGui
 
-local function Corner(Object,Radius)
-	local C=Instance.new("UICorner")
-	C.CornerRadius=UDim.new(0,Radius)
-	C.Parent=Object
-	return C
+local function Corner(o,r)
+	local c=Instance.new("UICorner")
+	c.CornerRadius=UDim.new(0,r)
+	c.Parent=o
 end
 
-local function Stroke(Object,Color,Thickness,Transparency)
-	local S=Instance.new("UIStroke")
-	S.Color=Color
-	S.Thickness=Thickness
-	S.Transparency=Transparency or 0
-	S.Parent=Object
-	return S
+local function Stroke(o,color,thickness,transparency)
+	local s=Instance.new("UIStroke")
+	s.Color=color
+	s.Thickness=thickness
+	s.Transparency=transparency or 0
+	s.Parent=o
 end
 
-local function MakeButton(Parent,Text,X,Y,W,H)
-	local B=Instance.new("TextButton")
-	B.Size=UDim2.fromOffset(W,H)
-	B.Position=UDim2.fromOffset(X,Y)
-	B.Text=Text
-	B.TextSize=14
-	B.Font=Enum.Font.GothamBold
-	B.TextColor3=Color3.fromRGB(255,255,255)
-	B.BackgroundColor3=Color3.fromRGB(42,42,54)
-	B.BorderSizePixel=0
-	B.AutoButtonColor=false
-	B.Active=true
-	B.ZIndex=50
-	B.Parent=Parent
-	Corner(B,10)
-	return B
+local function Button(parent,text,x,y,w,h)
+	local b=Instance.new("TextButton")
+	b.Size=UDim2.fromOffset(w,h)
+	b.Position=UDim2.fromOffset(x,y)
+	b.Text=text
+	b.TextSize=14
+	b.Font=Enum.Font.GothamBold
+	b.TextColor3=Color3.new(1,1,1)
+	b.BackgroundColor3=Color3.fromRGB(42,42,54)
+	b.BorderSizePixel=0
+	b.AutoButtonColor=false
+	b.Active=true
+	b.ZIndex=50
+	b.Parent=parent
+	Corner(b,10)
+	return b
 end
 
 local Open=Instance.new("ImageButton")
 Open.Name="OpenButton"
 Open.Size=UDim2.fromOffset(60,60)
-Open.Position=UDim2.new(0.5,-30,0.5,-30)
+Open.Position=UDim2.new(.5,-30,.5,-30)
 Open.Image=OUTSIDE_IMAGE
 Open.BackgroundColor3=Color3.fromRGB(30,30,40)
 Open.BorderSizePixel=0
@@ -68,33 +64,26 @@ Open.Active=true
 Open.ZIndex=500
 Open.Parent=Gui
 Corner(Open,30)
-
-local OpenStroke=Stroke(
-	Open,
-	Color3.fromRGB(150,90,220),
-	2,
-	0.15
-)
+Stroke(Open,Color3.fromRGB(150,90,220),2,.15)
 
 local Menu=Instance.new("Frame")
 Menu.Name="MainMenu"
 Menu.Size=UDim2.fromOffset(500,370)
-Menu.Position=UDim2.new(0.5,-250,0.5,-185)
+Menu.Position=UDim2.new(.5,-250,.5,-185)
 Menu.BackgroundColor3=Color3.fromRGB(20,20,28)
-Menu.BackgroundTransparency=0.03
 Menu.BorderSizePixel=0
 Menu.Visible=false
 Menu.Active=true
 Menu.ZIndex=10
 Menu.Parent=Gui
 Corner(Menu,18)
-Stroke(Menu,Color3.fromRGB(120,70,170),1,0.25)
+Stroke(Menu,Color3.fromRGB(120,70,170),1,.25)
 
 local Background=Instance.new("ImageLabel")
 Background.Size=UDim2.fromScale(1,1)
 Background.BackgroundTransparency=1
 Background.Image=MENU_IMAGE
-Background.ImageTransparency=0.5
+Background.ImageTransparency=.5
 Background.ScaleType=Enum.ScaleType.Crop
 Background.ZIndex=11
 Background.Parent=Menu
@@ -102,22 +91,18 @@ Corner(Background,18)
 
 local Overlay=Instance.new("Frame")
 Overlay.Size=UDim2.fromScale(1,1)
-Overlay.BackgroundColor3=Color3.fromRGB(0,0,0)
-Overlay.BackgroundTransparency=0.52
+Overlay.BackgroundColor3=Color3.new(0,0,0)
+Overlay.BackgroundTransparency=.52
 Overlay.BorderSizePixel=0
-Overlay.Active=false
 Overlay.ZIndex=12
 Overlay.Parent=Menu
 Corner(Overlay,18)
 
 local Drag=Instance.new("TextButton")
-Drag.Name="DragBar"
 Drag.Size=UDim2.new(1,-125,0,42)
 Drag.Position=UDim2.fromOffset(125,0)
-Drag.Text=""
 Drag.BackgroundTransparency=1
-Drag.BorderSizePixel=0
-Drag.AutoButtonColor=false
+Drag.Text=""
 Drag.Active=true
 Drag.ZIndex=100
 Drag.Parent=Menu
@@ -129,7 +114,7 @@ Title.BackgroundTransparency=1
 Title.Text="My Menu"
 Title.TextSize=16
 Title.Font=Enum.Font.GothamBold
-Title.TextColor3=Color3.fromRGB(255,255,255)
+Title.TextColor3=Color3.new(1,1,1)
 Title.TextXAlignment=Enum.TextXAlignment.Left
 Title.ZIndex=101
 Title.Parent=Menu
@@ -137,7 +122,7 @@ Title.Parent=Menu
 local Side=Instance.new("Frame")
 Side.Size=UDim2.fromOffset(125,370)
 Side.BackgroundColor3=Color3.fromRGB(10,10,15)
-Side.BackgroundTransparency=0.1
+Side.BackgroundTransparency=.1
 Side.BorderSizePixel=0
 Side.ZIndex=20
 Side.Parent=Menu
@@ -150,22 +135,19 @@ Content.BackgroundTransparency=1
 Content.ZIndex=20
 Content.Parent=Menu
 
-local JumpTab=MakeButton(Side,"Jump",8,25,109,42)
-local TargetTab=MakeButton(Side,"Target",8,75,109,42)
-local VisualTab=MakeButton(Side,"Visual",8,125,109,42)
+local JumpTab=Button(Side,"Jump",8,25,109,42)
+local TargetTab=Button(Side,"Target",8,75,109,42)
+local VisualTab=Button(Side,"Visual",8,125,109,42)
 
 local JumpPage=Instance.new("Frame")
 JumpPage.Size=UDim2.fromScale(1,1)
 JumpPage.BackgroundTransparency=1
-JumpPage.Visible=true
-JumpPage.ZIndex=21
 JumpPage.Parent=Content
 
 local TargetPage=Instance.new("Frame")
 TargetPage.Size=UDim2.fromScale(1,1)
 TargetPage.BackgroundTransparency=1
 TargetPage.Visible=false
-TargetPage.ZIndex=21
 TargetPage.Parent=Content
 
 local VisualPage=Instance.new("ScrollingFrame")
@@ -175,133 +157,200 @@ VisualPage.BorderSizePixel=0
 VisualPage.ScrollBarThickness=3
 VisualPage.CanvasSize=UDim2.fromOffset(0,540)
 VisualPage.Visible=false
-VisualPage.ZIndex=21
 VisualPage.Parent=Content
 
-local Up=MakeButton(JumpPage,"↑",120,45,65,42)
-local Left=MakeButton(JumpPage,"←",48,92,65,42)
-local Reset=MakeButton(JumpPage,"⟳",120,92,65,42)
-local Right=MakeButton(JumpPage,"→",192,92,65,42)
-local Down=MakeButton(JumpPage,"↓",120,139,65,42)
-local Plus=MakeButton(JumpPage,"+",192,45,65,42)
-local Minus=MakeButton(JumpPage,"−",48,139,65,42)
+local Up=Button(JumpPage,"↑",120,45,65,42)
+local Left=Button(JumpPage,"←",48,92,65,42)
+local Reset=Button(JumpPage,"⟳",120,92,65,42)
+local Right=Button(JumpPage,"→",192,92,65,42)
+local Down=Button(JumpPage,"↓",120,139,65,42)
+local Plus=Button(JumpPage,"+",192,45,65,42)
+local Minus=Button(JumpPage,"−",48,139,65,42)
 
-local OriginalPosition=nil
-local OriginalSize=nil
-local SavedPosition=nil
-local SavedSize=nil
-local CrouchPosition=nil
-local CrouchSize=nil
+local OriginalPosition
+local OriginalSize
+local SavedPosition
+local SavedSize
+
+local function GetTouchGui()
+	return PlayerGui:FindFirstChild("TouchGui")
+end
+
 local function GetJump()
-	local TouchGui=PlayerGui:FindFirstChild("TouchGui")
-	if not TouchGui then
-		return nil
-	end
+	local TouchGui=GetTouchGui()
+	if not TouchGui then return end
 
 	local Control=TouchGui:FindFirstChild("TouchControlFrame")
-	if not Control then
-		return nil
-	end
+	if not Control then return end
 
 	return Control:FindFirstChild("JumpButton",true)
 end
 
-local function SaveOriginal()
-	local J=GetJump()
-	if not J then
-		return
+local function WaitJump()
+	for i=1,20 do
+		local j=GetJump()
+		if j then return j end
+		task.wait(.25)
 	end
+end
+
+local function ChangeJumpImage()
+	local j=WaitJump()
+	if not j then return end
+
+	task.wait(.2)
+
+	pcall(function()
+		if j:IsA("ImageButton") or j:IsA("ImageLabel") then
+			j.Image=OUTSIDE_IMAGE
+			j.ImageTransparency=0
+			j.ScaleType=Enum.ScaleType.Fit
+		end
+	end)
+end
+
+local function SaveOriginal()
+	local j=GetJump()
+	if not j then return end
 
 	if not OriginalPosition then
-		OriginalPosition=J.Position
-		OriginalSize=J.Size
-		SavedPosition=J.Position
-		SavedSize=J.Size
+		OriginalPosition=j.Position
+		OriginalSize=j.Size
+		SavedPosition=j.Position
+		SavedSize=j.Size
 	end
 end
 
-local function MoveJump(X,Y)
-	local J=GetJump()
-	if not J then
-		return
-	end
-
+local function MoveJump(x,y)
+	local j=GetJump()
+	if not j then return end
 	SaveOriginal()
 
-	local P=J.Position
-
-	J.Position=UDim2.new(
-		P.X.Scale,
-		P.X.Offset+X,
-		P.Y.Scale,
-		P.Y.Offset+Y
+	local p=j.Position
+	j.Position=UDim2.new(
+		p.X.Scale,p.X.Offset+x,
+		p.Y.Scale,p.Y.Offset+y
 	)
-
-	SavedPosition=J.Position
+	SavedPosition=j.Position
 end
 
-local function ResizeJump(Amount)
-	local J=GetJump()
-	if not J then
-		return
-	end
-
+local function ResizeJump(amount)
+	local j=GetJump()
+	if not j then return end
 	SaveOriginal()
 
-	local S=J.Size
+	local s=j.Size
+	local x=math.max(40,s.X.Offset+amount)
+	local y=math.max(40,s.Y.Offset+amount)
 
-	SavedSize=UDim2.new(
-		S.X.Scale,
-		math.max(40,S.X.Offset+Amount),
-		S.Y.Scale,
-		math.max(40,S.Y.Offset+Amount)
-	)
-
-	J.Size=SavedSize
+	j.Size=UDim2.fromOffset(x,y)
+	SavedSize=j.Size
 end
 
-Up.Activated:Connect(function()
-	MoveJump(0,-15)
-end)
-
-Down.Activated:Connect(function()
-	MoveJump(0,15)
-end)
-
-Left.Activated:Connect(function()
-	MoveJump(-15,0)
-end)
-
-Right.Activated:Connect(function()
-	MoveJump(15,0)
-end)
-
-Plus.Activated:Connect(function()
-	ResizeJump(15)
-end)
-
-Minus.Activated:Connect(function()
-	ResizeJump(-15)
-end)
+Up.Activated:Connect(function() MoveJump(0,-15) end)
+Down.Activated:Connect(function() MoveJump(0,15) end)
+Left.Activated:Connect(function() MoveJump(-15,0) end)
+Right.Activated:Connect(function() MoveJump(15,0) end)
+Plus.Activated:Connect(function() ResizeJump(15) end)
+Minus.Activated:Connect(function() ResizeJump(-15) end)
 
 Reset.Activated:Connect(function()
-	local J=GetJump()
-	if not J then
-		return
-	end
+	local j=GetJump()
+	if not j then return end
 
 	if OriginalPosition then
-		J.Position=OriginalPosition
+		j.Position=OriginalPosition
 		SavedPosition=OriginalPosition
 	end
 
 	if OriginalSize then
-		J.Size=OriginalSize
+		j.Size=OriginalSize
 		SavedSize=OriginalSize
 	end
 end)
 
-local SelectedPlayer=nil
+local EditButtonOn=false
+local EditButton=Button(JumpPage,"Edit Button: OFF",48,190,209,40)
+
+local DraggingButton
+local DragStart
+local ButtonStartPosition
+
+local function IsGuiButton(o)
+	return o:IsA("TextButton") or o:IsA("ImageButton")
+end
+
+EditButton.Activated:Connect(function()
+	EditButtonOn=not EditButtonOn
+	EditButton.Text=EditButtonOn and "Edit Button: ON" or "Edit Button: OFF"
+	DraggingButton=nil
+end)
+
+UIS.InputBegan:Connect(function(input)
+	if not EditButtonOn then return end
+
+	if input.UserInputType~=Enum.UserInputType.Touch
+		and input.UserInputType~=Enum.UserInputType.MouseButton1 then
+		return
+	end
+
+	local TouchGui=GetTouchGui()
+	if not TouchGui then return end
+
+	local pos=input.Position
+
+	for _,obj in ipairs(TouchGui:GetDescendants()) do
+		if IsGuiButton(obj) and obj.Visible then
+			local p=obj.AbsolutePosition
+			local s=obj.AbsoluteSize
+
+			if pos.X>=p.X and pos.X<=p.X+s.X
+				and pos.Y>=p.Y and pos.Y<=p.Y+s.Y then
+
+				DraggingButton=obj
+				DragStart=pos
+				ButtonStartPosition=obj.Position
+				break
+			end
+		end
+	end
+end)
+
+UIS.InputChanged:Connect(function(input)
+	if not EditButtonOn or not DraggingButton then return end
+
+	if input.UserInputType~=Enum.UserInputType.Touch
+		and input.UserInputType~=Enum.UserInputType.MouseMovement then
+		return
+	end
+
+	if not DraggingButton.Parent then
+		DraggingButton=nil
+		return
+	end
+
+	local delta=input.Position-DragStart
+
+	DraggingButton.Position=UDim2.new(
+		ButtonStartPosition.X.Scale,
+		ButtonStartPosition.X.Offset+delta.X,
+		ButtonStartPosition.Y.Scale,
+		ButtonStartPosition.Y.Offset+delta.Y
+	)
+
+	if DraggingButton==GetJump() then
+		SavedPosition=DraggingButton.Position
+	end
+end)
+
+UIS.InputEnded:Connect(function(input)
+	if input.UserInputType==Enum.UserInputType.Touch
+		or input.UserInputType==Enum.UserInputType.MouseButton1 then
+		DraggingButton=nil
+	end
+end)
+
+local SelectedPlayer
 local TargetOn=false
 local ViewOn=false
 
@@ -309,10 +358,9 @@ local List=Instance.new("ScrollingFrame")
 List.Size=UDim2.new(1,-20,0,130)
 List.Position=UDim2.fromOffset(10,5)
 List.BackgroundColor3=Color3.fromRGB(15,15,20)
-List.BackgroundTransparency=0.15
+List.BackgroundTransparency=.15
 List.BorderSizePixel=0
 List.ScrollBarThickness=4
-List.ZIndex=35
 List.Parent=TargetPage
 Corner(List,10)
 
@@ -327,64 +375,52 @@ SelectedLabel.BackgroundTransparency=1
 SelectedLabel.Text="Target: None"
 SelectedLabel.TextSize=14
 SelectedLabel.Font=Enum.Font.GothamBold
-SelectedLabel.TextColor3=Color3.fromRGB(255,255,255)
+SelectedLabel.TextColor3=Color3.new(1,1,1)
 SelectedLabel.TextXAlignment=Enum.TextXAlignment.Left
-SelectedLabel.ZIndex=35
 SelectedLabel.Parent=TargetPage
 
-local TargetButton=MakeButton(TargetPage,"Target: OFF",10,178,135,42)
-local ViewButton=MakeButton(TargetPage,"View: OFF",155,178,135,42)
-local RefreshButton=MakeButton(TargetPage,"Refresh",10,228,135,42)
+local TargetButton=Button(TargetPage,"Target: OFF",10,178,135,42)
+local ViewButton=Button(TargetPage,"View: OFF",155,178,135,42)
+local RefreshButton=Button(TargetPage,"Refresh",10,228,135,42)
 
-local function SetCameraToPlayer(Target)
-	if not Target then
-		return
+local function ResetCamera()
+	local cam=workspace.CurrentCamera
+	local char=Player.Character
+	local hum=char and char:FindFirstChildOfClass("Humanoid")
+
+	if hum then
+		cam.CameraType=Enum.CameraType.Custom
+		cam.CameraSubject=hum
 	end
+end
 
-	local Character=Target.Character
-	if not Character then
-		return
-	end
+local function SetCamera(target)
+	local char=target and target.Character
+	local hum=char and char:FindFirstChildOfClass("Humanoid")
+	if not hum then return end
 
-	local Humanoid=Character:FindFirstChildOfClass("Humanoid")
-	if not Humanoid then
-		return
-	end
-
-	local Camera=workspace.CurrentCamera
-	Camera.CameraType=Enum.CameraType.Custom
-	Camera.CameraSubject=Humanoid
+	local cam=workspace.CurrentCamera
+	cam.CameraType=Enum.CameraType.Custom
+	cam.CameraSubject=hum
 end
 
 local function RefreshPlayers()
-	for _,V in ipairs(List:GetChildren()) do
-		if V:IsA("TextButton") then
-			V:Destroy()
+	for _,v in ipairs(List:GetChildren()) do
+		if v:IsA("TextButton") then
+			v:Destroy()
 		end
 	end
 
-	for _,P in ipairs(Players:GetPlayers()) do
-		if P~=Player then
-			local B=MakeButton(
-				List,
-				P.DisplayName.." @"..P.Name,
-				0,
-				0,
-				100,
-				32
-			)
+	for _,p in ipairs(Players:GetPlayers()) do
+		if p~=Player then
+			local b=Button(List,p.DisplayName.." @"..p.Name,0,0,100,32)
+			b.Size=UDim2.new(1,-8,0,32)
+			b.TextSize=12
 
-			B.Size=UDim2.new(1,-8,0,32)
-			B.TextSize=12
-			B.Parent=List
-
-			B.Activated:Connect(function()
-				SelectedPlayer=P
-				SelectedLabel.Text="Target: "..P.DisplayName
-
-				if ViewOn then
-					SetCameraToPlayer(P)
-				end
+			b.Activated:Connect(function()
+				SelectedPlayer=p
+				SelectedLabel.Text="Target: "..p.DisplayName
+				if ViewOn then SetCamera(p) end
 			end)
 		end
 	end
@@ -392,71 +428,49 @@ local function RefreshPlayers()
 	task.wait()
 
 	List.CanvasSize=UDim2.fromOffset(
-		0,
-		ListLayout.AbsoluteContentSize.Y+5
+		0,ListLayout.AbsoluteContentSize.Y+5
 	)
 end
 
 RefreshButton.Activated:Connect(RefreshPlayers)
 
-Players.PlayerAdded:Connect(function()
-	task.defer(RefreshPlayers)
-end)
-
-Players.PlayerRemoving:Connect(function(P)
-	if P==SelectedPlayer then
-		SelectedPlayer=nil
-		TargetOn=false
-		ViewOn=false
-
-		TargetButton.Text="Target: OFF"
-		ViewButton.Text="View: OFF"
-		SelectedLabel.Text="Target: None"
-
-		local Camera=workspace.CurrentCamera
-		local Character=Player.Character
-		local Humanoid=Character and Character:FindFirstChildOfClass("Humanoid")
-
-		if Humanoid then
-			Camera.CameraSubject=Humanoid
-		end
-	end
-
-	task.defer(RefreshPlayers)
-end)
-
 TargetButton.Activated:Connect(function()
-	if not SelectedPlayer then
-		return
-	end
+	if not SelectedPlayer then return end
 
 	TargetOn=not TargetOn
 	TargetButton.Text=TargetOn and "Target: ON" or "Target: OFF"
 end)
 
 ViewButton.Activated:Connect(function()
-	if not SelectedPlayer then
-		return
-	end
+	if not SelectedPlayer then return end
 
 	ViewOn=not ViewOn
 	ViewButton.Text=ViewOn and "View: ON" or "View: OFF"
 
 	if ViewOn then
-		SetCameraToPlayer(SelectedPlayer)
+		SetCamera(SelectedPlayer)
 	else
-		local Camera=workspace.CurrentCamera
-		local Character=Player.Character
-		local Humanoid=Character and Character:FindFirstChildOfClass("Humanoid")
-
-		if Humanoid then
-			Camera.CameraType=Enum.CameraType.Custom
-			Camera.CameraSubject=Humanoid
-		end
+		ResetCamera()
 	end
 end)
 
-local InfJumpOn=false
+Players.PlayerAdded:Connect(function()
+	task.defer(RefreshPlayers)
+end)
+
+Players.PlayerRemoving:Connect(function(p)
+	if p==SelectedPlayer then
+		SelectedPlayer=nil
+		TargetOn=false
+		ViewOn=false
+		TargetButton.Text="Target: OFF"
+		ViewButton.Text="View: OFF"
+		SelectedLabel.Text="Target: None"
+		ResetCamera()
+	end
+
+	task.defer(RefreshPlayers)
+end)local InfJumpOn=false
 local FullBrightOn=false
 local NoFogOn=false
 local CircleESPOn=false
@@ -464,13 +478,13 @@ local NameESPOn=false
 local DistanceESPOn=false
 local RainbowOn=false
 
-local InfJumpButton=MakeButton(VisualPage,"Inf Jump: OFF",15,15,210,40)
-local FullBrightButton=MakeButton(VisualPage,"Loop FB: OFF",15,62,210,40)
-local NoFogButton=MakeButton(VisualPage,"No Fog: OFF",15,109,210,40)
-local CircleButton=MakeButton(VisualPage,"Circle: OFF",15,156,210,40)
-local NameButton=MakeButton(VisualPage,"Name: OFF",15,203,210,40)
-local DistanceButton=MakeButton(VisualPage,"Distance: OFF",15,250,210,40)
-local RainbowButton=MakeButton(VisualPage,"Rainbow: OFF",15,297,210,40)
+local InfJumpButton=Button(VisualPage,"Inf Jump: OFF",15,15,210,40)
+local FullBrightButton=Button(VisualPage,"Loop FB: OFF",15,62,210,40)
+local NoFogButton=Button(VisualPage,"No Fog: OFF",15,109,210,40)
+local CircleButton=Button(VisualPage,"Circle: OFF",15,156,210,40)
+local NameButton=Button(VisualPage,"Name: OFF",15,203,210,40)
+local DistanceButton=Button(VisualPage,"Distance: OFF",15,250,210,40)
+local RainbowButton=Button(VisualPage,"Rainbow: OFF",15,297,210,40)
 
 local ColorLabel=Instance.new("TextLabel")
 ColorLabel.Size=UDim2.fromOffset(160,26)
@@ -479,9 +493,7 @@ ColorLabel.BackgroundTransparency=1
 ColorLabel.Text="Color"
 ColorLabel.TextSize=14
 ColorLabel.Font=Enum.Font.GothamBold
-ColorLabel.TextColor3=Color3.fromRGB(255,255,255)
-ColorLabel.TextXAlignment=Enum.TextXAlignment.Left
-ColorLabel.ZIndex=50
+ColorLabel.TextColor3=Color3.new(1,1,1)
 ColorLabel.Parent=VisualPage
 
 local CurrentColor=Color3.fromRGB(170,80,255)
@@ -491,7 +503,6 @@ Preview.Size=UDim2.fromOffset(42,42)
 Preview.Position=UDim2.fromOffset(245,42)
 Preview.BackgroundColor3=CurrentColor
 Preview.BorderSizePixel=0
-Preview.ZIndex=50
 Preview.Parent=VisualPage
 Corner(Preview,21)
 
@@ -506,92 +517,64 @@ local Presets={
 	{"W",Color3.fromRGB(255,255,255)}
 }
 
-for I,Data in ipairs(Presets) do
-	local X=245+((I-1)%4)*47
-	local Y=92+math.floor((I-1)/4)*47
+for i,data in ipairs(Presets) do
+	local x=245+((i-1)%4)*47
+	local y=92+math.floor((i-1)/4)*47
 
-	local B=MakeButton(
-		VisualPage,
-		Data[1],
-		X,
-		Y,
-		40,
-		40
-	)
+	local b=Button(VisualPage,data[1],x,y,40,40)
+	b.BackgroundColor3=data[2]
 
-	B.BackgroundColor3=Data[2]
-
-	B.Activated:Connect(function()
-		CurrentColor=Data[2]
+	b.Activated:Connect(function()
+		CurrentColor=data[2]
 		Preview.BackgroundColor3=CurrentColor
 	end)
 end
 
 local ESP={}
 
-local function RemoveESP(P)
-	local Data=ESP[P]
+local function RemoveESP(p)
+	local data=ESP[p]
+	if not data then return end
 
-	if not Data then
-		return
-	end
+	if data.Circle then data.Circle:Destroy() end
+	if data.CircleStroke then data.CircleStroke:Destroy() end
+	if data.Name then data.Name:Destroy() end
+	if data.Distance then data.Distance:Destroy() end
 
-	if Data.Circle then
-		Data.Circle:Destroy()
-	end
-
-	if Data.CircleStroke then
-		Data.CircleStroke:Destroy()
-	end
-
-	if Data.Name then
-		Data.Name:Destroy()
-	end
-
-	if Data.Distance then
-		Data.Distance:Destroy()
-	end
-
-	ESP[P]=nil
+	ESP[p]=nil
 end
 
-local function CreateESP(P)
-	if P==Player then
-		return
-	end
+local function CreateESP(p)
+	if p==Player then return end
 
-	RemoveESP(P)
+	RemoveESP(p)
 
 	local Circle=Instance.new("Frame")
 	Circle.Name="PlayerCircle"
 	Circle.Size=UDim2.fromOffset(56,56)
-	Circle.AnchorPoint=Vector2.new(0.5,0.5)
+	Circle.AnchorPoint=Vector2.new(.5,.5)
 	Circle.BackgroundTransparency=1
 	Circle.BorderSizePixel=0
 	Circle.Visible=false
 	Circle.ZIndex=1000
 	Circle.Parent=Gui
-
-	local CircleCorner=Instance.new("UICorner")
-	CircleCorner.CornerRadius=UDim.new(1,0)
-	CircleCorner.Parent=Circle
+	Corner(Circle,30)
 
 	local CircleStroke=Instance.new("UIStroke")
 	CircleStroke.Thickness=3
 	CircleStroke.Color=CurrentColor
-	CircleStroke.Transparency=0
 	CircleStroke.Parent=Circle
 
 	local Name=Instance.new("TextLabel")
 	Name.Name="PlayerName"
 	Name.Size=UDim2.fromOffset(180,24)
-	Name.AnchorPoint=Vector2.new(0.5,0.5)
+	Name.AnchorPoint=Vector2.new(.5,.5)
 	Name.BackgroundTransparency=1
-	Name.Text=P.DisplayName
+	Name.Text=p.DisplayName
 	Name.TextSize=14
 	Name.Font=Enum.Font.GothamBold
 	Name.TextColor3=CurrentColor
-	Name.TextStrokeTransparency=0.2
+	Name.TextStrokeTransparency=.2
 	Name.Visible=false
 	Name.ZIndex=1001
 	Name.Parent=Gui
@@ -599,18 +582,18 @@ local function CreateESP(P)
 	local Distance=Instance.new("TextLabel")
 	Distance.Name="PlayerDistance"
 	Distance.Size=UDim2.fromOffset(180,24)
-	Distance.AnchorPoint=Vector2.new(0.5,0.5)
+	Distance.AnchorPoint=Vector2.new(.5,.5)
 	Distance.BackgroundTransparency=1
 	Distance.Text="0m"
 	Distance.TextSize=13
 	Distance.Font=Enum.Font.GothamBold
 	Distance.TextColor3=CurrentColor
-	Distance.TextStrokeTransparency=0.2
+	Distance.TextStrokeTransparency=.2
 	Distance.Visible=false
 	Distance.ZIndex=1001
 	Distance.Parent=Gui
 
-	ESP[P]={
+	ESP[p]={
 		Circle=Circle,
 		CircleStroke=CircleStroke,
 		Name=Name,
@@ -618,77 +601,42 @@ local function CreateESP(P)
 	}
 end
 
-local function CreateAllESP()
-	for _,P in ipairs(Players:GetPlayers()) do
-		if P~=Player then
-			CreateESP(P)
-		end
+local function GetTorso(p)
+	local char=p.Character
+	if not char then return end
+
+	return char:FindFirstChild("HumanoidRootPart")
+		or char:FindFirstChild("UpperTorso")
+		or char:FindFirstChild("Torso")
+end
+
+for _,p in ipairs(Players:GetPlayers()) do
+	if p~=Player then
+		CreateESP(p)
 	end
 end
 
-local function HideESP()
-	for _,Data in pairs(ESP) do
-		if Data.Circle then
-			Data.Circle.Visible=false
-		end
-
-		if Data.Name then
-			Data.Name.Visible=false
-		end
-
-		if Data.Distance then
-			Data.Distance.Visible=false
-		end
-	end
-end
-
-CreateAllESP()
-
-Players.PlayerAdded:Connect(function(P)
-	CreateESP(P)
+Players.PlayerAdded:Connect(function(p)
+	task.defer(function()
+		CreateESP(p)
+	end)
 end)
 
-Players.PlayerRemoving:Connect(function(P)
-	RemoveESP(P)
-end)
-
-local function GetTorso(P)
-	local Character=P.Character
-
-	if not Character then
-		return nil
-	end
-
-	return Character:FindFirstChild("UpperTorso")
-		or Character:FindFirstChild("Torso")
-		or Character:FindFirstChild("HumanoidRootPart")
-end
+Players.PlayerRemoving:Connect(RemoveESP)
 
 CircleButton.Activated:Connect(function()
 	CircleESPOn=not CircleESPOn
 	CircleButton.Text=CircleESPOn and "Circle: ON" or "Circle: OFF"
-
-	if CircleESPOn then
-		CreateAllESP()
-	end
 end)
 
 NameButton.Activated:Connect(function()
 	NameESPOn=not NameESPOn
 	NameButton.Text=NameESPOn and "Name: ON" or "Name: OFF"
-
-	if NameESPOn then
-		CreateAllESP()
-	end
 end)
 
 DistanceButton.Activated:Connect(function()
 	DistanceESPOn=not DistanceESPOn
 	DistanceButton.Text=DistanceESPOn and "Distance: ON" or "Distance: OFF"
-
-	if DistanceESPOn then
-		CreateAllESP()
-	end
 end)
 
 RainbowButton.Activated:Connect(function()
@@ -716,15 +664,13 @@ NoFogButton.Activated:Connect(function()
 end)
 
 UIS.JumpRequest:Connect(function()
-	if not InfJumpOn then
-		return
-	end
+	if not InfJumpOn then return end
 
-	local Character=Player.Character
-	local Humanoid=Character and Character:FindFirstChildOfClass("Humanoid")
+	local char=Player.Character
+	local hum=char and char:FindFirstChildOfClass("Humanoid")
 
-	if Humanoid then
-		Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+	if hum then
+		hum:ChangeState(Enum.HumanoidStateType.Jumping)
 	end
 end)
 
@@ -741,94 +687,89 @@ RunService.RenderStepped:Connect(function()
 	end
 
 	if TargetOn and SelectedPlayer then
-		local MyCharacter=Player.Character
-		local TargetCharacter=SelectedPlayer.Character
+		local myChar=Player.Character
+		local targetChar=SelectedPlayer.Character
 
-		local MyRoot=MyCharacter and MyCharacter:FindFirstChild("HumanoidRootPart")
-		local TargetRoot=TargetCharacter and TargetCharacter:FindFirstChild("HumanoidRootPart")
+		local myRoot=myChar and myChar:FindFirstChild("HumanoidRootPart")
+		local targetRoot=targetChar and targetChar:FindFirstChild("HumanoidRootPart")
 
-		if MyRoot and TargetRoot then
-			local A=MyRoot.Position
-			local B=TargetRoot.Position
+		if myRoot and targetRoot then
+			local a=myRoot.Position
+			local b=targetRoot.Position
 
-			MyRoot.CFrame=CFrame.lookAt(
-				A,
-				Vector3.new(B.X,A.Y,B.Z)
+			myRoot.CFrame=CFrame.lookAt(
+				a,
+				Vector3.new(b.X,a.Y,b.Z)
 			)
 		end
 	end
 
-	local Camera=workspace.CurrentCamera
+	local camera=workspace.CurrentCamera
+	if not camera then return end
 
-	if not Camera then
-		return
-	end
+	local myChar=Player.Character
+	local myRoot=myChar and myChar:FindFirstChild("HumanoidRootPart")
 
-	local MyCharacter=Player.Character
-	local MyRoot=MyCharacter and MyCharacter:FindFirstChild("HumanoidRootPart")
-
-	local Color=CurrentColor
+	local color=CurrentColor
 
 	if RainbowOn then
-		Color=Color3.fromHSV(
-			(os.clock()*0.3)%1,
+		color=Color3.fromHSV(
+			(os.clock()*.3)%1,
 			1,
 			1
 		)
 	end
 
-	for P,Data in pairs(ESP) do
-		local Torso=GetTorso(P)
-		local Character=P.Character
-		local Humanoid=Character and Character:FindFirstChildOfClass("Humanoid")
+	for p,data in pairs(ESP) do
+		local torso=GetTorso(p)
+		local char=p.Character
+		local hum=char and char:FindFirstChildOfClass("Humanoid")
 
-		if not Torso or not Humanoid or Humanoid.Health<=0 then
-			Data.Circle.Visible=false
-			Data.Name.Visible=false
-			Data.Distance.Visible=false
+		if not torso or not hum or hum.Health<=0 then
+			data.Circle.Visible=false
+			data.Name.Visible=false
+			data.Distance.Visible=false
 			continue
 		end
 
-		local ScreenPosition,OnScreen=
-			Camera:WorldToViewportPoint(Torso.Position)
+		local screen,onScreen=camera:WorldToViewportPoint(torso.Position)
 
-		if not OnScreen or ScreenPosition.Z<=0 then
-			Data.Circle.Visible=false
-			Data.Name.Visible=false
-			Data.Distance.Visible=false
+		if not onScreen or screen.Z<=0 then
+			data.Circle.Visible=false
+			data.Name.Visible=false
+			data.Distance.Visible=false
 			continue
 		end
 
-		local X=ScreenPosition.X
-		local Y=ScreenPosition.Y
+		local x=screen.X
+		local y=screen.Y
 
-		Data.Circle.Size=UDim2.fromOffset(56,56)
-		Data.Circle.Position=UDim2.fromOffset(X,Y)
-		Data.Circle.Visible=CircleESPOn
+		data.Circle.Position=UDim2.fromOffset(x,y)
+		data.Circle.Visible=CircleESPOn
 
-		Data.Name.Position=UDim2.fromOffset(X,Y-45)
-		Data.Name.Text=P.DisplayName
-		Data.Name.TextColor3=Color
-		Data.Name.Visible=NameESPOn
+		data.Name.Position=UDim2.fromOffset(x,y-45)
+		data.Name.Text=p.DisplayName
+		data.Name.TextColor3=color
+		data.Name.Visible=NameESPOn
 
-		Data.Distance.Position=UDim2.fromOffset(X,Y+45)
-		Data.Distance.TextColor3=Color
-		Data.Distance.Visible=DistanceESPOn
+		data.Distance.Position=UDim2.fromOffset(x,y+45)
+		data.Distance.TextColor3=color
+		data.Distance.Visible=DistanceESPOn
 
-		if MyRoot then
-			local Distance=(MyRoot.Position-Torso.Position).Magnitude
-			Data.Distance.Text=math.floor(Distance).."m"
+		if myRoot then
+			data.Distance.Text=
+				math.floor((myRoot.Position-torso.Position).Magnitude).."m"
 		end
 
-		Data.CircleStroke.Color=Color
+		data.CircleStroke.Color=color
 	end
 end)
 
-local function ShowPage(Page)
+local function ShowPage(page)
 	JumpPage.Visible=false
 	TargetPage.Visible=false
 	VisualPage.Visible=false
-	Page.Visible=true
+	page.Visible=true
 end
 
 JumpTab.Activated:Connect(function()
@@ -844,45 +785,43 @@ VisualTab.Activated:Connect(function()
 	ShowPage(VisualPage)
 end)
 
-local function MakeDraggable(Handle,Object)
-	local Dragging=false
-	local StartInput=nil
-	local StartPosition=nil
+local function MakeDraggable(handle,object)
+	local dragging=false
+	local startInput
+	local startPosition
 
-	Handle.InputBegan:Connect(function(Input)
-		if Input.UserInputType==Enum.UserInputType.MouseButton1
-			or Input.UserInputType==Enum.UserInputType.Touch then
+	handle.InputBegan:Connect(function(input)
+		if input.UserInputType==Enum.UserInputType.MouseButton1
+			or input.UserInputType==Enum.UserInputType.Touch then
 
-			Dragging=true
-			StartInput=Input.Position
-			StartPosition=Object.Position
+			dragging=true
+			startInput=input.Position
+			startPosition=object.Position
 		end
 	end)
 
-	UIS.InputChanged:Connect(function(Input)
-		if not Dragging then
-			return
-		end
+	handle.InputChanged:Connect(function(input)
+		if not dragging then return end
 
-		if Input.UserInputType==Enum.UserInputType.MouseMovement
-			or Input.UserInputType==Enum.UserInputType.Touch then
+		if input.UserInputType==Enum.UserInputType.MouseMovement
+			or input.UserInputType==Enum.UserInputType.Touch then
 
-			local Delta=Input.Position-StartInput
+			local delta=input.Position-startInput
 
-			Object.Position=UDim2.new(
-				StartPosition.X.Scale,
-				StartPosition.X.Offset+Delta.X,
-				StartPosition.Y.Scale,
-				StartPosition.Y.Offset+Delta.Y
+			object.Position=UDim2.new(
+				startPosition.X.Scale,
+				startPosition.X.Offset+delta.X,
+				startPosition.Y.Scale,
+				startPosition.Y.Offset+delta.Y
 			)
 		end
 	end)
 
-	UIS.InputEnded:Connect(function(Input)
-		if Input.UserInputType==Enum.UserInputType.MouseButton1
-			or Input.UserInputType==Enum.UserInputType.Touch then
+	UIS.InputEnded:Connect(function(input)
+		if input.UserInputType==Enum.UserInputType.MouseButton1
+			or input.UserInputType==Enum.UserInputType.Touch then
 
-			Dragging=false
+			dragging=false
 		end
 	end)
 end
@@ -895,38 +834,22 @@ Open.Activated:Connect(function()
 end)
 
 Player.CharacterAdded:Connect(function()
-	task.wait(0.5)
+	task.wait(.7)
 
-	local J=GetJump()
-	local C=FindCrouch()
+	local j=WaitJump()
 
-	if C and not CrouchPosition then
-		CrouchPosition=C.Position
-		CrouchSize=C.Size
-	end
+	if j then
+		if SavedPosition then
+			j.Position=SavedPosition
+		end
 
-	if J and SavedPosition then
-		J.Position=SavedPosition
-	end
+		if SavedSize then
+			j.Size=SavedSize
+		end
 
-	if J and SavedSize then
-		J.Size=SavedSize
-	end
-
-	if C and CrouchPosition then
-		C.Position=CrouchPosition
-	end
-
-	if C and CrouchSize then
-		C.Size=CrouchSize
+		ChangeJumpImage()
 	end
 end)
-local function FindCrouch()
-	local TouchGui=PlayerGui:FindFirstChild("TouchGui")
-	if not TouchGui then
-		return nil
-	end
 
-	return TouchGui:FindFirstChild("CrouchButton",true)
-end
+task.defer(ChangeJumpImage)
 RefreshPlayers()
