@@ -270,20 +270,86 @@ Reset.Activated:Connect(function()
 end)
 
 local EditButtonOn=false
-local EditButton=Button(JumpPage,"Edit Button: OFF",48,190,209,40)
+local SelectedButton=nil
+local SelectionStroke=nil
+local ResizeHandle=nil
 
-local DraggingButton
-local DragStart
-local ButtonStartPosition
+local Dragging=false
+local Resizing=false
+local StartInput=nil
+local StartPosition=nil
+local StartSize=nil
 
-local function IsGuiButton(o)
-	return o:IsA("TextButton") or o:IsA("ImageButton")
+local EditButton=Button(
+	JumpPage,
+	"Edit Button: OFF",
+	48,190,209,40
+)
+
+local function ClearSelection()
+	Dragging=false
+	Resizing=false
+	SelectedButton=nil
+
+	if SelectionStroke then
+		SelectionStroke:Destroy()
+		SelectionStroke=nil
+	end
+
+	if ResizeHandle then
+		ResizeHandle:Destroy()
+		ResizeHandle=nil
+	end
+end
+
+local function SelectButton(button)
+	ClearSelection()
+
+	SelectedButton=button
+
+	SelectionStroke=Instance.new("UIStroke")
+	SelectionStroke.Color=Color3.new(1,1,1)
+	SelectionStroke.Thickness=2
+	SelectionStroke.Parent=button
+
+	ResizeHandle=Instance.new("TextButton")
+	ResizeHandle.Size=UDim2.fromOffset(18,18)
+	ResizeHandle.AnchorPoint=Vector2.new(1,1)
+	ResizeHandle.Position=UDim2.fromScale(1,1)
+	ResizeHandle.Text=""
+	ResizeHandle.BackgroundColor3=Color3.new(1,1,1)
+	ResizeHandle.BorderSizePixel=0
+	ResizeHandle.ZIndex=10000
+	ResizeHandle.Parent=button
+
+	Corner(ResizeHandle,4)
+
+	ResizeHandle.InputBegan:Connect(function(input)
+		if not EditButtonOn then return end
+
+		if input.UserInputType==Enum.UserInputType.Touch
+			or input.UserInputType==Enum.UserInputType.MouseButton1 then
+
+			Resizing=true
+			Dragging=false
+
+			StartInput=input.Position
+			StartSize=button.Size
+		end
+	end)
 end
 
 EditButton.Activated:Connect(function()
 	EditButtonOn=not EditButtonOn
-	EditButton.Text=EditButtonOn and "Edit Button: ON" or "Edit Button: OFF"
-	DraggingButton=nil
+
+	EditButton.Text=
+		EditButtonOn
+		and "Edit Button: ON"
+		or "Edit Button: OFF"
+
+	if not EditButtonOn then
+		ClearSelection()
+	end
 end)
 
 UIS.InputBegan:Connect(function(input)
@@ -294,60 +360,94 @@ UIS.InputBegan:Connect(function(input)
 		return
 	end
 
+	if Resizing then return end
+
 	local pos=input.Position
 
-	for _,obj in ipairs(PlayerGui:GetDescendants()) do
-		if obj:IsDescendantOf(Gui) then
-			continue
+	if SelectedButton then
+		local p=SelectedButton.AbsolutePosition
+		local s=SelectedButton.AbsoluteSize
+
+		if pos.X>=p.X and pos.X<=p.X+s.X
+			and pos.Y>=p.Y and pos.Y<=p.Y+s.Y then
+
+			Dragging=true
+			StartInput=pos
+			StartPosition=SelectedButton.Position
+			return
 		end
+	end
 
-		if IsGuiButton(obj) and obj.Visible then
-			local p=obj.AbsolutePosition
-			local s=obj.AbsoluteSize
+	for _,obj in ipairs(PlayerGui:GetDescendants()) do
+		if obj:IsA("TextButton") or obj:IsA("ImageButton") then
 
-			if pos.X>=p.X and pos.X<=p.X+s.X
-				and pos.Y>=p.Y and pos.Y<=p.Y+s.Y then
+			if not obj:IsDescendantOf(Gui)
+				and obj.Visible then
 
-				DraggingButton=obj
-				DragStart=pos
-				ButtonStartPosition=obj.Position
-				break
+				local p=obj.AbsolutePosition
+				local s=obj.AbsoluteSize
+
+				if pos.X>=p.X and pos.X<=p.X+s.X
+					and pos.Y>=p.Y and pos.Y<=p.Y+s.Y then
+
+					SelectButton(obj)
+
+					Dragging=true
+					StartInput=pos
+					StartPosition=obj.Position
+
+					return
+				end
 			end
 		end
 	end
+
+	ClearSelection()
 end)
 
 UIS.InputChanged:Connect(function(input)
-	if not EditButtonOn or not DraggingButton then return end
+	if not EditButtonOn or not SelectedButton then return end
 
 	if input.UserInputType~=Enum.UserInputType.Touch
 		and input.UserInputType~=Enum.UserInputType.MouseMovement then
 		return
 	end
 
-	if not DraggingButton.Parent then
-		DraggingButton=nil
-		return
-	end
+	local delta=input.Position-StartInput
 
-	local delta=input.Position-DragStart
+	if Resizing then
 
-	DraggingButton.Position=UDim2.new(
-		ButtonStartPosition.X.Scale,
-		ButtonStartPosition.X.Offset+delta.X,
-		ButtonStartPosition.Y.Scale,
-		ButtonStartPosition.Y.Offset+delta.Y
-	)
+		local x=math.max(
+			40,
+			StartSize.X.Offset+delta.X
+		)
 
-	if DraggingButton==GetJump() then
-		SavedPosition=DraggingButton.Position
+		local y=math.max(
+			40,
+			StartSize.Y.Offset+delta.Y
+		)
+
+		SelectedButton.Size=
+			UDim2.fromOffset(x,y)
+
+	elseif Dragging then
+
+		SelectedButton.Position=
+			UDim2.new(
+				StartPosition.X.Scale,
+				StartPosition.X.Offset+delta.X,
+				StartPosition.Y.Scale,
+				StartPosition.Y.Offset+delta.Y
+			)
 	end
 end)
 
 UIS.InputEnded:Connect(function(input)
 	if input.UserInputType==Enum.UserInputType.Touch
 		or input.UserInputType==Enum.UserInputType.MouseButton1 then
-		DraggingButton=nil
+
+		Dragging=false
+		Resizing=false
 	end
 end)
 
